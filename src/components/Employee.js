@@ -3,7 +3,7 @@ import React, {useState, useEffect} from "react";
 const defaultImageSrc = "/img/placeholder_image.png";
 
 const initialFieldValues = {
-  employeeId: 0,
+  employeeID: 0,
   employeeName: "",
   occupation: "",
   imageName: "",
@@ -60,7 +60,7 @@ export default function Employee(props) {
     e.preventDefault();
     if (validate()) {
       const formData = new FormData();
-      formData.append('employeeId', values.employeeId);
+      formData.append('employeeID', values.employeeID);
       formData.append('employeeName', values.employeeName);
       formData.append('occupation', values.occupation);
       formData.append('imageName', values.imageName);

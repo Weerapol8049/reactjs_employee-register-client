@@ -11,7 +11,7 @@ export default function EmployeeList() {
     refreshEmployeeList();
   }, []);
 
-  const employeeAPI = (url = "https://localhost:44346/api/Employee") => {
+  const employeeAPI = (url = "https://localhost:44346/api/Employee/") => {
     return {
       fetchAll: () => axios.get(url),
       create: (newrecord) => axios.post(url, newrecord),
@@ -29,7 +29,7 @@ export default function EmployeeList() {
 
   //รับ image data from Employee.js
   const addOrEdit = (formData, onSuccess) => {
-    if (formData.get("employeeId") == "0")
+    if (formData.get("employeeID") == "0")
       employeeAPI()
         .create(formData)
         .then((res) => {
@@ -39,7 +39,7 @@ export default function EmployeeList() {
         .catch((err) => console.log(err));
     else
       employeeAPI()
-        .update(formData.get("employeeId"), formData)
+        .update(formData.get("employeeID"), formData)
         .then((res) => {
           onSuccess();
           refreshEmployeeList();
@@ -49,6 +49,15 @@ export default function EmployeeList() {
 
   const showRecordDetails = (data) => {
     setRecordForEdit(data);
+  };
+
+  const onDelete = (e, id) => {
+    e.stopPropagation();
+    if (window.confirm("Are you sure to delete this record?"))
+      employeeAPI()
+        .delete(id)
+        .then((res) => refreshEmployeeList())
+        .catch((err) => console.log(err));
   };
 
   const imageCard = (data) => (
@@ -62,6 +71,15 @@ export default function EmployeeList() {
       <div className="card-body">
         <h5>{data.employeeName}</h5>
         <span>{data.occupation}</span>
+        <br></br>
+        <button
+          className="btn btn-light delete-button"
+          onClick={(e) => onDelete(e, parseInt(data.employeeID))}
+        >
+          {" "}
+          Delete
+          {/* <i className="far fa-trash-alt"></i> */}
+        </button>
       </div>
     </div>
   );
